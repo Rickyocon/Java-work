@@ -52,12 +52,12 @@ public class maze extends mazebase
 	 if(nx>0&&nx<mwidth && ny>=0&&ny<mheight && M[ny][nx]==0)
          {
              int mx = x+DX[P[i]];
-	     int my = y+DY[P[i]];
-	     M[ny][nx]=1;
-	     drawblock(ny,nx);
-	     M[my][mx]=1;
-	     drawblock(my,mx);
-	     digout(ny,nx); //Recursive call for P.length
+	         int my = y+DY[P[i]];
+	         M[ny][nx]=1;
+	         drawblock(ny,nx);
+	         M[my][mx]=1;
+	         drawblock(my,mx);
+	         digout(ny,nx); //Recursive call for P.length
          }
 
 
@@ -71,12 +71,13 @@ public class maze extends mazebase
 
 //------------------------------------------------------------------------------------------------------------------------------------
 
-
+ protected records[][] PATH;
  @Override
      // This method is used to solve the maze using a depth first search algorithum (finding the optimal path)
      public void solve()
      {
  
+     PATH = new records[mheight][mwidth];
 	 //These two lines are used to maunally digout the exit for the maze 
          M[mwidth-2] [mwidth-1] =  1;
          drawblock(mheight-2,mwidth-1); 
@@ -87,33 +88,32 @@ public class maze extends mazebase
 	 while (y!=mheight-2 ||  x!=mwidth-1)
          {
   
-	     int bestx = 0;
-	     int besty = 0;
-	     int bestval;
+	         int bestx = 0;
+	         int besty = 0;
+	         int bestval;
       	     bestval = 0x7fffffff;
 
 
              //look east
-	     if(x+1<mwidth && M[y][x+1]!=0 && M[y][x+1]<bestval)
+	         if(x+1<mwidth && M[y][x+1]!=0 && M[y][x+1]<bestval)
              {
                  bestx = x+1;
-	         besty = y;
-	         bestval = M[y][x+1];
+	             besty = y;
+	             bestval = M[y][x+1];
              }
 
 
-	     //look south
-	     if(y+1<mheight && M[y+1][x]!=0 && M[y+1][x]<bestval)
+	        //look south
+	         if(y+1<mheight && M[y+1][x]!=0 && M[y+1][x]<bestval)
              {
                  bestx = x;
-	         besty = y+1;
-	         bestval = M[y+1][x];
-	     }
+	             besty = y+1;
+	             bestval = M[y+1][x];
+	         }
 
 
              //look west
-
-	     if(x-1>=0 && x<=mwidth && M[y][x-1]!=0 && M[y][x-1]<bestval)
+	         if(x-1>=0 && x<=mwidth && M[y][x-1]!=0 && M[y][x-1]<bestval)
              {
                  bestval = M[y][x-1];
 	             bestx = x-1;
@@ -123,21 +123,28 @@ public class maze extends mazebase
 
 
              //look north
-	     if(y-1>= 0 && y<=mheight && M[y-1][x] !=0 && M[y-1][x] < bestval)
+	         if(y-1>= 0 && y<=mheight && M[y-1][x] !=0 && M[y-1][x] < bestval)
              {
                  bestval = M[y-1][x];
-	         bestx = x;
-	         besty = y-1;
+	             bestx = x;
+	             besty = y-1;
              }
 
-
+             
+             records B = new records(y,x);
+             
              drawblock(y,x);
              y = besty;
              x = bestx;
              drawdot(y,x);
              nextframe(40);
 	         M[y][x]++;
-	       
+
+
+             if(PATH[y][x] == null)
+             {
+                 PATH[y][x] = B;
+             }       
 
 	 }//end of while loop
 	 
@@ -145,8 +152,37 @@ public class maze extends mazebase
      }//solve
 
 
+//------------------------------------------------------------------------------------------------------------------------------------
 
+public class records  // you can define this class inside or outside of your class
+{
+    int y;
+    int x;
+    public records(int a, int b) {y=a; x=b;}
+} // simple class to record the a coordinate.
 
+@Override
+public void trace()
+{
+    int nx = mwidth-1;
+    int ny = mheight-2;
+    int x;
+    int y;
+
+    while(ny!=1 ||  nx!=1)
+    {
+          drawdot(ny,nx);
+          nextframe(40);
+          x = PATH[ny][nx].x;
+          y = PATH[ny][nx].y;      
+          nx = x;
+          ny = y;
+
+    }
+
+    
+
+}
 
 
 //-------------------------------------------------------------------------------------------------------------------------------------
