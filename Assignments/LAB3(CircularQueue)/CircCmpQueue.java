@@ -34,11 +34,11 @@ public class CircCmpQueue<T extends Comparable<T>> extends CircQueue<T> implemen
     public void enqueue(T x) 
     {
         super.enqueue(x);
-        if(A[ri(size)].compareTo(x) < 0)
+        if(size>1&& A[ri(size-2)].compareTo(x) > 0)
         {
             sorted = false;
         }
-        A[ri(size+1)] = x;
+        //A[ri(size)] = x;
     } //enqueue
 
 
@@ -111,14 +111,16 @@ public class CircCmpQueue<T extends Comparable<T>> extends CircQueue<T> implemen
         {
             super.push(x);
             int i = 0;
-            while(size>2 && A[ri(i)].compareTo(A[ri(i+1)])<0)
+            while(i+1<size && A[ri(i)].compareTo(A[ri(i+1)])>0)
             {
-                T tmp = A[i];
-                A[i] = A[i+1];
-                A[i+1] = tmp;
+                //System.out.println("anything");
+                T tmp = A[ri(i)];
+                A[ri(i)] = A[ri(i+1)];
+                A[ri(i+1)] = tmp;
                 i++;
                 index = i;
             }
+            sorted=true;
         }
         else if(sorted==false)
         {
@@ -140,10 +142,11 @@ public class CircCmpQueue<T extends Comparable<T>> extends CircQueue<T> implemen
         int n = 200;
         CircCmpQueue<Double> cq = new CircCmpQueue<Double>(1);
         // insert in order n random values
-        while (--n>0) cq.insert_sorted(Math.random()*1000);
+        while (--n>=0) cq.insert_sorted(Math.random()*1000);
         System.out.println("sorted: "+cq.is_sorted());
         System.out.println("forced check: "+cq.forced_check());    
 	    System.out.println("testing search: "+ cq.search(123.456));
+        //System.out.println(cq.size);
         Double x = cq.getnth(10); // get the 10th value from queue
         System.out.println("search2: "+ cq.search(x)); //should find it
         cq.printinfo();
