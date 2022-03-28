@@ -95,3 +95,5 @@ public class FlexBinaryHeap<T extends HeapValue<T>> extends BinaryHeap<T> implem
         FlexBinaryHeap<scholar> heap = new FlexBinaryHeap<scholar>(scholarNew, 10);
     }
 }
+
+//this is a test
