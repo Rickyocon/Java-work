@@ -7,18 +7,18 @@ public class FlexBinaryHeap<T extends HeapValue<T>> extends BinaryHeap<T> implem
     @SuppressWarnings("unchecked") /* don't use unless you're REALY sure...*/
     protected T[] makearray(int n) { return (T[]) new HeapValue[n]; }
 
-
-    protected void heapify()
-    {
-        int i = (size/2) - 1;
-        while (i>=0) swapdown(i--); 
-    }
-
     public FlexBinaryHeap(T[] A, int s)
     {   if (A==null || A.length<1 || s<0 || s>=A.length)
 	    throw new RuntimeException("invalid heap array");
 	H = A;  size = s;
 	heapify();
+    }
+
+    //Part 2 heapify
+    protected void heapify()
+    {
+        int i = (size/2) - 1;
+        while (i>=0) swapdown(i--); 
     }
 
     @Override
@@ -42,7 +42,7 @@ public class FlexBinaryHeap<T extends HeapValue<T>> extends BinaryHeap<T> implem
 
     }
 
-
+    //Part 1 reposition
     public boolean reposition(T x) 
     {
         //get parent left right 
@@ -68,6 +68,46 @@ public class FlexBinaryHeap<T extends HeapValue<T>> extends BinaryHeap<T> implem
     }
 
 
+    //Part 3
+    // Java program for implementation of Heap Sort
+    public void sort(int arr[])
+    {
+        FlexBinaryHeap<Integer> heapSort = new FlexBinaryHeap<Integer>(arr.length);
+        
+        for(int i=0;i<arr.length;i++)
+        {
+            heapSort.add(arr[i]);
+        }
+
+        for(int i=0;i<arr.length;i++)
+        {
+            heapSort.pop();
+        }
+
+    }
+        
+    /**class numbers
+    {
+        public final String name;
+        public void number(int) // constructor
+        {
+            if (arr = null) throw new RuntimeException("invalid: array is null");
+        }
+        public Integer compareTo(scholar other)
+        {
+        return (Integer)(gpa*100+0.5) - (Integer) (other.gpa*100+0.5);
+        }
+
+        public void updateGPA(double g)  // OOPS, the "priority" can change!
+        {
+        if (g>0 && g<=4.0) gpa = g;
+        }
+
+        protected int hi = -1; // heap index, -1 means index invalid
+        public int getIndex() { return hi; }
+        public void setIndex(int n) { if (n>=0) hi=n; }
+  
+    }//numbers class **/
 
 
     public static void main(String[] av)
@@ -86,6 +126,7 @@ public class FlexBinaryHeap<T extends HeapValue<T>> extends BinaryHeap<T> implem
         e.updateGPA(3.7);  FPQ.reposition(e);
         System.out.println("after GPA updates...");
         while (FPQ.size()>0) System.out.println(FPQ.poll().name);
+        //test heapify
         System.out.println("testing heapify: ");
         scholar Colin = new scholar("Colin", 1.79);
         scholar Jake = new scholar("Jake", 3.80);
