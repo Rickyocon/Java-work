@@ -1,7 +1,5 @@
 {
     "java.project.sourcePaths": [
-        "Assignments/SpecialMidtermLab",
-        "Assignments/Lab5(Dynamic dispatch)",
-        "Assignments/LAB6(Hash)"
+        "Assignments\\LAB7 (Avl tree)"
     ]
 }
