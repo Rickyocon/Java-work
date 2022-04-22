@@ -184,7 +184,7 @@ public class BinSearchTree<T extends Comparable<? super T> & Serializable> imple
     public boolean checkbst() { return root.isBst(null,null); }
 
     ////// main for testing
-    /*
+    
     public static void main(String[] av)
     {
 	int n = 1000;
@@ -196,5 +196,5 @@ public class BinSearchTree<T extends Comparable<? super T> & Serializable> imple
 	BstGraph W = new BstGraph(1024,768); 
 	W.draw(tree);
     }//main
-    */
+    
 }// BinSearchTree outer class
