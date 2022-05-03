@@ -1,7 +1,5 @@
-interface Comparable<T>
-{
-   int compareTo(T x);
-}
+package SpecialMidtermLab;
+
 
 class moreuseful<T extends Comparable<T>> // some algorithms on integer arrays
 {

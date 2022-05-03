@@ -5,118 +5,121 @@ class needelmen
     int w = 0;
     String A, B;
     int [][] twoDarr;
+    byte [][] gaveMaxArr;
+    int AlignmentScore; 
 
     public needelmen (String A,String B)
     {
         this.A = "." + A;
         this.B = "." + B;
         twoDarr = new int [A.length()][B.length()]; 
+        AlignmentScore = (twoDarr[A.length()-1][B.length()-1]);
     }
 
     public void fill()
     {
         twoDarr [0][0] = 0;
-        for (int x=0;x<A.length();x++) 
+        for (int x=0;x<A.length()-1;x++) 
         {
             for(int q=0;q<B.length();q++)
             {
-                int A = twoDarr [x-1][q-1] + score(x,q); //corner 
-                int B = twoDarr[x-1][q] + w; 
-                int C = twoDarr[x][q-1] + w;
+                int A = -9000;
+                int B = -9000;
+                int C = -9000;
+                if (x>=1 && q>=1){
+                A = twoDarr [x-1][q-1] + score(x,q); //corner
+                }
+                if (x>=1){
+                B = twoDarr[x-1][q] + w; 
+                }
+                if(q>=1){
+                C = twoDarr[x][q-1] + w;
+                }
+                
                 int max = Math.max(A,Math.max(B,C));
                 twoDarr[x][q] = max;
+
+                if(max == A) {gaveMaxArr [x][q] = 1;}
+                if(max == B) {gaveMaxArr [x][q] = 2;}
+                if(max == B) {gaveMaxArr [x][q] = 3;}
+                
             }  
         }
 
     }
-}
 
-
-
-
-
-
-
-
-class ScoringScheme1
-{
-    @Override
-    public int score(int i, int k)
+    public void traceBack()
     {
-
-    }
-
-    @Override
-    String fill (char i, char k)
-    {
-      
+        int AInd = this.A.length()-1;
+        int BInd = this.B.length()-1;
+        String middle = "";
+        String AOutput = "";
+        String BOutput = "";
         
-    }//fill
 
-
-    String indices(char A, char B)
-    {
-        
-    }
-    
-}//ScoringScheme 1
-
-class ScoringScheme2 
-{
-
-    @Override
-    public int score(int i, int k)
-    {
-
-    }
-
-    @Override
-    String fill (char i, char k)
-    {
-        
-    }//fill
-
-
-}
-
-
-class ScoringScheme3 
-{
-
-    @Override
-    public int score(int i, int k)
-    {
-
-    }
-
-    @Override
-    String fill (char i, char k)
-    {
-        
-    }//fill
-
-
-}
-
-
-public class DnaLab ()
-{
-
-    public static void main(String[] argv)
-    {
-        // read and return string from file: String arman = read("arman.dna");
-        public static String read(String file)
+        while (AInd!=0 && BInd!=0)
         {
-        String s = "";
-        try
+             int val = gaveMaxArr[AInd][BInd];
+             if (val==1) 
+             {
+                AOutput = A.charAt(AInd)+ AOutput;
+                BOutput = B.charAt(BInd)+ BOutput;
+                middle = "|"+middle;
+                AInd--; 
+                BInd--;
+
+             }
+             else if(val==2)
+             {
+                AOutput = A.charAt(AInd)+ AOutput;
+                BOutput = "_"+ BOutput;
+                middle = " "+middle;
+                AInd--; 
+             }
+            
+             else if(val==3)
+             {
+                AOutput = "_"+ AOutput;
+                BOutput = B.charAt(BInd)+ BOutput;
+                middle = " "+middle;
+                BInd--; 
+             }
+
+        }
+
+
+
+    }
+
+    public int score(int i,int k)
+    {
+        if (A.charAt(i) == B.charAt(k)) {return 1;}
+        else {return 0;}
+    }
+
+}
+
+
+
+
+
+public class DnaLab  
+{
+    public static void main(String[] av)
+    {
+       String A = "AACTG";
+       String B = "ACTAG";
+       needelmen debug = new needelmen(A, B);
+       debug.fill();  
+       for(int x=0;x<A.length()-1;x++)
+       {
+            for(int q=0;q<B.length();q++)
             {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-            s = br.readLine();
-            br.close();
+                System.out.println(twoDarr[x][q] + "\t");
             }
-            catch (IOException ie) {System.out.println("IO Error"); System.exit(1); }
-        return s;
-        }// read
+            System.out.println();
+       }
+       System.out.println("Final Score is:",AlignmentScore)
     } 
 
 

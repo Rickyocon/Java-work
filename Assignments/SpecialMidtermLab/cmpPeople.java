@@ -1,3 +1,5 @@
+package SpecialMidtermLab;
+
 
 interface Comparable<T>
 {
