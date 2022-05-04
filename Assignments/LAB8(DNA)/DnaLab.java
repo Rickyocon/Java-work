@@ -1,32 +1,32 @@
-import java.io.*;
+import java.util.Arrays;
 
 class needelmen
 {
     int w = 0;
     String A, B;
-    int [][] twoDarr;
+    static int [][] twoDarr;
     byte [][] gaveMaxArr;
-    int AlignmentScore; 
+    static int AlignmentScore; 
 
     public needelmen (String A,String B)
     {
         this.A = "." + A;
         this.B = "." + B;
-        twoDarr = new int [A.length()][B.length()]; 
-        AlignmentScore = (twoDarr[A.length()-1][B.length()-1]);
+        twoDarr = new int [this.A.length()][this.B.length()]; 
+        gaveMaxArr = new byte [this.A.length()][this.B.length()]; 
     }
 
     public void fill()
     {
         twoDarr [0][0] = 0;
-        for (int x=0;x<A.length()-1;x++) 
+        for (int x=0;x<A.length();x++) 
         {
             for(int q=0;q<B.length();q++)
             {
                 int A = -9000;
                 int B = -9000;
                 int C = -9000;
-                if (x>=1 && q>=1){
+                if (x>0 && q>0){
                 A = twoDarr [x-1][q-1] + score(x,q); //corner
                 }
                 if (x>=1){
@@ -35,16 +35,20 @@ class needelmen
                 if(q>=1){
                 C = twoDarr[x][q-1] + w;
                 }
-                
-                int max = Math.max(A,Math.max(B,C));
-                twoDarr[x][q] = max;
+                if(x!=0 || q!=0)
+                {
+                    int max = Math.max(A,Math.max(B,C));
+                    twoDarr[x][q] = max;
+                    if(max == A) {gaveMaxArr [x][q] = 1;}
+                    if(max == B) {gaveMaxArr [x][q] = 2;}
+                    if(max == C) {gaveMaxArr [x][q] = 3;}
+                }
 
-                if(max == A) {gaveMaxArr [x][q] = 1;}
-                if(max == B) {gaveMaxArr [x][q] = 2;}
-                if(max == B) {gaveMaxArr [x][q] = 3;}
+                
                 
             }  
         }
+        System.out.println(Arrays.deepToString(twoDarr));
 
     }
 
@@ -57,9 +61,10 @@ class needelmen
         String BOutput = "";
         
 
-        while (AInd!=0 && BInd!=0)
+        while (AInd!=0 || BInd!=0)
         {
              int val = gaveMaxArr[AInd][BInd];
+             System.out.println(val);
              if (val==1) 
              {
                 AOutput = A.charAt(AInd)+ AOutput;
@@ -86,8 +91,11 @@ class needelmen
              }
 
         }
-
-
+        System.out.println(AOutput);
+        System.out.println(middle);
+        System.out.println(BOutput);
+        System.out.println("Optimial allignment score is "+ twoDarr[A.length()-1][B.length()-1]);
+    
 
     }
 
@@ -97,6 +105,7 @@ class needelmen
         else {return 0;}
     }
 
+
 }
 
 
@@ -105,21 +114,20 @@ class needelmen
 
 public class DnaLab  
 {
+    public static String randseq(int n)
+    {
+        char[] S = new char[n];  // faster than building string char by char
+        String DNA = "ACGT";
+        for(int i=0;i<n;i++)
+            S[i] = DNA.charAt((int)(Math.random()*4));
+        return new String(S); // constructor converts char[] to String
+    } // randseq
+    
     public static void main(String[] av)
     {
-       String A = "AACTG";
-       String B = "ACTAG";
-       needelmen debug = new needelmen(A, B);
+       needelmen debug = new needelmen(randseq(10), randseq(10));
        debug.fill();  
-       for(int x=0;x<A.length()-1;x++)
-       {
-            for(int q=0;q<B.length();q++)
-            {
-                System.out.println(twoDarr[x][q] + "\t");
-            }
-            System.out.println();
-       }
-       System.out.println("Final Score is:",AlignmentScore)
+       debug.traceBack();
     } 
 
 
