@@ -1,6 +1,4 @@
-import java.util.Arrays;
-
-class needelmen
+abstract class needelmen
 {
     int w = 0;
     String A, B;
@@ -8,7 +6,7 @@ class needelmen
     byte [][] gaveMaxArr;
     static int AlignmentScore; 
 
-    public needelmen (String A,String B)
+    public needelmen(String A,String B)
     {
         this.A = "." + A;
         this.B = "." + B;
@@ -48,7 +46,7 @@ class needelmen
                 
             }  
         }
-        System.out.println(Arrays.deepToString(twoDarr));
+        //System.out.println(Arrays.deepToString(twoDarr)); 
 
     }
 
@@ -64,7 +62,6 @@ class needelmen
         while (AInd!=0 || BInd!=0)
         {
              int val = gaveMaxArr[AInd][BInd];
-             System.out.println(val);
              if (val==1) 
              {
                 AOutput = A.charAt(AInd)+ AOutput;
@@ -108,11 +105,30 @@ class needelmen
 
 }
 
+class score2 extends needelmen
+{
+    public score2(String A,String B)
+    {
+        super(A,B);
+    }
+    
+    
+    @Override
+    public int score(int A1,int B1)
+    {
+        if((A.charAt(A1) | 32) == (B.charAt(B1) | 32))
+        {return 1;}
+        else{return 0;}
+
+    }
+
+}
 
 
 
 
-public class DnaLab  
+
+public class DnaLab
 {
     public static String randseq(int n)
     {
@@ -122,10 +138,12 @@ public class DnaLab
             S[i] = DNA.charAt((int)(Math.random()*4));
         return new String(S); // constructor converts char[] to String
     } // randseq
-    
+
     public static void main(String[] av)
     {
-       needelmen debug = new needelmen(randseq(10), randseq(10));
+        //String A = "AcGt";
+        //String B = "aCgT";
+       needelmen debug = new score2(randseq(5), randseq(5));  //chnage scoring scheme here
        debug.fill();  
        debug.traceBack();
     } 
